@@ -409,6 +409,15 @@ void statsd_counter_per_channel_increment(uint32_t freq, char *counter) {
 	statsd_inc(statsd, metric, 1.0);
 }
 
+void statsd_gauge_per_channel_set(uint32_t freq, char *gauge, long value) {
+	if(statsd == NULL) {
+		return;
+	}
+	char metric[256];
+	snprintf(metric, sizeof(metric), "%d.%s", freq, gauge);
+	statsd_gauge(statsd, metric, value);
+}
+
 void statsd_counter_per_msgdir_increment(la_msg_dir msg_dir, char *counter) {
 	if(statsd == NULL) {
 		return;

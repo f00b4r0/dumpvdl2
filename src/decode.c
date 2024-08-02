@@ -369,6 +369,9 @@ void decode_vdl2_burst(vdl2_channel_t *v) {
 			if(v->frame_pwr > 1.0F) {	// check for log(v->frame_power) > 0dBFs
 				statsd_increment_per_channel(v->freq, "decoder.msg.good_loud");
 			}
+			statsd_set_per_channel(v->freq, "decoder.msg.good_pwr_mdbfs", (long)(10000.0f * log10f(v->frame_pwr)));
+			statsd_set_per_channel(v->freq, "decoder.msg.good_nf_mdbfs", (long)(20000.0f * log10f(v->mag_nf + 0.001f)));
+			statsd_set_per_channel(v->freq, "decoder.msg.good_mppm_error", (long)(1000.0f * v->ppm_error));
 cleanup:
 			XFREE(data);
 			XFREE(fec);
